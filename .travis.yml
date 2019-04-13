@@ -9,4 +9,4 @@ rvm:
   - 2.5.5
 
 before_install:
-  - echo "Test!"
+  - bundle install
