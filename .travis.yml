@@ -1,0 +1,9 @@
+sudo: enabled
+dist: trusty
+language: ruby
+
+os:
+  - linux
+
+rvm:
+  - 2.6

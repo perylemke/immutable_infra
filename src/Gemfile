@@ -1,0 +1,7 @@
+source "http://rubygems.org"
+
+gem 'rack'
+gem 'rack-test'
+gem 'test-unit'
+gem 'minitest'
+gem 'sinatra'
