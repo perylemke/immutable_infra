@@ -20,7 +20,9 @@ before_install:
   - rm -fv terraform_0.11.13_linux_amd64.zip
 
 install:
-  - sudo apt-get install software-properties-common
-  - sudo apt-add-repository --yes --update ppa:ansible/ansible
-  - sudo apt-get install ansible
-  - curl -fsSL https://get.docker.com | sh
+  - sudo apt-get update
+  - sudo apt-get install -y python-pip libssl-dev
+  - pip install --upgrade pip setuptools wheel
+  - pip install molecule ansible docker
+  - cd src
+  - bundle install
