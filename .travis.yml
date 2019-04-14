@@ -24,6 +24,6 @@ install:
   - sudo apt-get update
   - sudo apt-get install -y python-pip libssl-dev
   - sudo pip install --upgrade pip setuptools wheel
-  - sudo pip install molecule ansible
+  - sudo pip install ansible
   - cd src
   - bundle install
