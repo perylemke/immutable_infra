@@ -30,15 +30,16 @@ install:
 
 jobs:
   include:
-    - stage: "Tests"
+    - stage: "Tests App"
       name: "Ruby Tests"
       script:
           - bundle exec rake
           - cd ..
-    - stage: "Build"
+    - stage: "Build Container Image"
       name: "Build and Push Docker Image"
       script:
-          - docker build docker build -f src/Dockerfile -t perylemke/apery:$LAST_COMMIT_HASH .
+          - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          - docker build -f src/Dockerfile -t perylemke/apery:$LAST_COMMIT_HASH .
           - docker tag perylemke/apery:$LAST_COMMIT_HASH perylemke/apery:latest
           - docker push perylemke/apery:$LAST_COMMIT_HASH
           - docker push perylemke/apery:latest
