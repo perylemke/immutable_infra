@@ -1,4 +1,5 @@
 sudo: enabled
+services: docker
 dist: trusty
 language: ruby
 
@@ -6,4 +7,42 @@ os:
   - linux
 
 rvm:
-  - 2.6
+  - 2.5.5
+
+before_install:
+  - sudo apt-get update && sudo apt-get install -y curl
+  - curl -L -o packer_1.4.0_linux_amd64.zip https://releases.hashicorp.com/packer/1.4.0/packer_1.4.0_linux_amd64.zip
+  - sudo unzip packer_1.4.0_linux_amd64.zip
+  - sudo cp packer /usr/local/bin/
+  - rm packer_1.4.0_linux_amd64.zip
+  - curl -L -o terraform_0.11.13_linux_amd64.zip https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
+  - sudo unzip terraform_0.11.13_linux_amd64.zip
+  - sudo cp terraform /usr/local/bin
+  - rm -fv terraform_0.11.13_linux_amd64.zip
+
+install:
+  - sudo apt-get update
+  - sudo apt-get install -y python-pip libssl-dev
+  - sudo pip install --upgrade pip setuptools wheel
+  - sudo pip install ansible
+  - cd src
+  - bundle install
+
+jobs:
+  include:
+    - stage: "Tests App"
+      name: "Ruby Tests"
+      script:
+        - bundle exec rake
+    - stage: "Build Container Image"
+      name: "Build and Push Docker Image"
+      script:
+        - rm -fv Gemfile.lock
+        - export HASH=`date +%d%m%Y%H%M%S`
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t perylemke/apery:$HASH .
+        - docker tag perylemke/apery:$HASH perylemke/apery:latest
+        - docker push perylemke/apery:$HASH
+        - docker push perylemke/apery
+        - cd ..
+      if: branch = master
