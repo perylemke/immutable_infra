@@ -34,10 +34,10 @@ jobs:
       name: "Ruby Tests"
       script:
         - bundle exec rake
-        - rm -fv Gemfile.lock
     - stage: "Build Container Image"
       name: "Build and Push Docker Image"
       script:
+        - rm -fv Gemfile.lock
         - export HASH=`date +%d%m%Y%H%M%S`
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t perylemke/apery:$HASH .
