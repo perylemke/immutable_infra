@@ -27,3 +27,12 @@ install:
   - sudo pip install ansible
   - cd src
   - bundle install
+  - bundle exec rake
+  - cd ..
+
+jobs:
+  include:
+    - stage: "Tests"
+      name: "Ruby Tests"
+      script:
+        - make local-tests
