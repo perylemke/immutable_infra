@@ -1,7 +1,3 @@
-require 'rake/testtask'
-
-task default: "test"
-
-Rake::TestTask.new do |task|
- task.pattern = 'apery_test.rb'
+task :default do
+  puts "Running Pipeline!"
 end
