@@ -1,6 +1,7 @@
 source "http://rubygems.org"
 
 gem 'rack'
+gem 'rake'
 gem 'rack-test'
 gem 'test-unit'
 gem 'minitest'
