@@ -26,7 +26,7 @@ install:
   - sudo pip install --upgrade pip setuptools wheel
   - sudo pip install ansible
   - cd src
-  - gem install rake
+  - bundle install
 
 jobs:
   include:
@@ -37,6 +37,7 @@ jobs:
     - stage: "Build Container Image"
       name: "Build and Push Docker Image"
       script:
+          - rm -fv Gemfile.lock
           - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           - docker build -t perylemke/apery .
           - docker push perylemke/apery

@@ -4,8 +4,9 @@ RUN mkdir /usr/src/app
 COPY . /usr/src/app/
 WORKDIR /usr/src/app
 
-ENV BUNDLER_VERSION 2.0.1
-RUN gem install bundler && bundle install --jobs 20 --retry 5
+# ENV BUNDLER_VERSION 2.0.1
+# RUN gem install bundler && bundle install --jobs 20 --retry 5
+RUN bundle install
 
 ENV PORT 3000
 EXPOSE 3000
