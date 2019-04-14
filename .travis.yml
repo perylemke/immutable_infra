@@ -37,10 +37,11 @@ jobs:
     - stage: "Build Container Image"
       name: "Build and Push Docker Image"
       script:
+          - export HASH=`date +%d%m%Y%H%M%S`
           - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          - docker build -t perylemke/apery:$LAST_COMMIT_HASH .
-          - docker tag perylemke/apery:$LAST_COMMIT_HASH perylemke/apery:latest
-          - docker push perylemke/apery:$LAST_COMMIT_HASH
+          - docker build -t perylemke/apery:$HASH .
+          - docker tag perylemke/apery:$HASH perylemke/apery:latest
+          - docker push perylemke/apery:$HASH
           - docker push perylemke/apery:latest
           - cd ..
       if: branch = travis
