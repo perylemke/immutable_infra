@@ -21,8 +21,8 @@ before_install:
 
 install:
   - sudo apt-get update
-  - sudo apt-get install -y python3-pip libssl-dev
-  - pip3 install --upgrade pip setuptools wheel
-  - pip3 install molecule ansible docker
+  - sudo apt-get install -y python-pip libssl-dev
+  - sudo pip install --upgrade pip setuptools wheel
+  - sudo pip install molecule ansible docker
   - cd src
   - bundle install
