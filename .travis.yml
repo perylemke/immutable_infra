@@ -10,15 +10,19 @@ rvm:
   - 2.5.5
 
 before_install:
+  - echo $GOOGLE_PACKER_CREDENTIALS > $TRAVIS_BUILD_DIR/demo-infra.json
+  - export GOOGLE_APPLICATION_CREDENTIALS=$TRAVIS_BUILD_DIR/demo-infra.json
   - sudo apt-get update && sudo apt-get install -y curl
+  - mkdir bin && cd bin
   - curl -L -o packer_1.4.0_linux_amd64.zip https://releases.hashicorp.com/packer/1.4.0/packer_1.4.0_linux_amd64.zip
   - sudo unzip packer_1.4.0_linux_amd64.zip
-  - sudo cp packer /usr/local/bin/
+  - sudo mv packer /usr/local/bin/
   - rm packer_1.4.0_linux_amd64.zip
   - curl -L -o terraform_0.11.13_linux_amd64.zip https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
   - sudo unzip terraform_0.11.13_linux_amd64.zip
-  - sudo cp terraform /usr/local/bin
+  - sudo mv terraform /usr/local/bin
   - rm -fv terraform_0.11.13_linux_amd64.zip
+  - cd ..
 
 install:
   - sudo apt-get update
@@ -44,5 +48,10 @@ jobs:
         - docker tag perylemke/apery:$HASH perylemke/apery:latest
         - docker push perylemke/apery:$HASH
         - docker push perylemke/apery
+      if: branch = packer
+    - stage: "Build VM image"
+      name: "Build VM image with Packer"
+      script:
         - cd ..
-      if: branch = master
+        - make build
+      if: branch = packer

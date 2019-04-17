@@ -1,4 +1,4 @@
-.PHONY: local-tests
+.PHONY: build
 
-local-tests:
-	@ruby src/apery_test.rb
+build:
+	@packer build packer/belegost.json

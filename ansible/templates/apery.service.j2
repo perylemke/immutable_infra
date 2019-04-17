@@ -1,0 +1,14 @@
+[Unit]
+Description=Apery Sinatra App
+After=docker.service
+Wants=network-online.target
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=/usr/bin/docker pull perylemke/apery
+ExecStart=/usr/bin/docker run --rm -p 9292:9292 --name apery perylemke/apery
+ExecStop=/usr/bin/docker stop apery
+
+[Install]
+WantedBy=multi-user.target
