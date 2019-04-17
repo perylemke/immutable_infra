@@ -1,0 +1,38 @@
+{
+    "variables": {
+        "packer_build_number": "belegost",
+        "project_id": "perylemke",
+        "zone": "us-central1-c",
+        "version": "{{timestamp}}"
+    },
+    "description": "Belegost - Sinatra Hello App Image",
+    "builders": [
+      {
+            "type": "googlecompute",
+            "project_id": "perylemke",
+            "source_image_family": "debian-9",
+            "image_name": "{{user `packer_build_number`}}-{{user `version`}}",
+            "network": "pery-prod",
+            "subnetwork": "pery-prod",
+            "tags": ["ssh"],
+            "ssh_username": "admin",
+            "zone": "{{user `zone`}}",
+            "disk_size": 10,
+            "image_family": "{{user `packer_build_number`}}",
+            "image_description": "Belegost - Sinatra Hello App Image" 
+      }
+    ],
+    "provisioners": [
+      {
+          "type": "shell",
+          "inline": [
+              "sudo apt update",
+              "sudo apt install ansible -y"
+          ]
+      },
+      {
+          "type": "ansible",
+          "playbook_file": "./ansible/playbook.yml"
+      }
+  ]
+}

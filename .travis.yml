@@ -10,6 +10,8 @@ rvm:
   - 2.5.5
 
 before_install:
+  - echo $GOOGLE_PACKER_CREDENTIALS > infra/demo-infra.json
+  - export GOOGLE_APPLICATION_CREDENTIALS=infra/demo-infra.json
   - sudo apt-get update && sudo apt-get install -y curl
   - curl -L -o packer_1.4.0_linux_amd64.zip https://releases.hashicorp.com/packer/1.4.0/packer_1.4.0_linux_amd64.zip
   - sudo unzip packer_1.4.0_linux_amd64.zip
@@ -45,4 +47,9 @@ jobs:
         - docker push perylemke/apery:$HASH
         - docker push perylemke/apery
         - cd ..
-      if: branch = master
+      if: branch = packer
+    - stage: "Build VM image"
+      name: "Build VM image with Packer"
+      script:
+        - make build
+      if: branch = packer
