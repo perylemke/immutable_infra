@@ -48,10 +48,10 @@ jobs:
         - docker tag perylemke/apery:$HASH perylemke/apery:latest
         - docker push perylemke/apery:$HASH
         - docker push perylemke/apery
-        - cd ..
       if: branch = packer
     - stage: "Build VM image"
       name: "Build VM image with Packer"
       script:
+        - cd ..
         - make build
       if: branch = packer
