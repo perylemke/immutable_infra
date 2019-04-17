@@ -10,8 +10,8 @@ rvm:
   - 2.5.5
 
 before_install:
-  - echo $GOOGLE_PACKER_CREDENTIALS > infra/demo-infra.json
-  - export GOOGLE_APPLICATION_CREDENTIALS=infra/demo-infra.json
+  - echo $GOOGLE_PACKER_CREDENTIALS > $TRAVIS_BUILD_DIR/demo-infra.json
+  - export GOOGLE_APPLICATION_CREDENTIALS=$TRAVIS_BUILD_DIR/demo-infra.json
   - sudo apt-get update && sudo apt-get install -y curl
   - curl -L -o packer_1.4.0_linux_amd64.zip https://releases.hashicorp.com/packer/1.4.0/packer_1.4.0_linux_amd64.zip
   - sudo unzip packer_1.4.0_linux_amd64.zip
