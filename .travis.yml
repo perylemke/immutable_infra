@@ -55,3 +55,9 @@ jobs:
         - cd ..
         - make build
       if: branch = master
+    - stage: "Deploy"
+      name: "Deploy with Terraform"
+      script:
+        - make init
+        - make deploy
+      if: branch = master
