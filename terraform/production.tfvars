@@ -1,0 +1,5 @@
+project = "perylemke"
+region = "us-central1"
+zone = "us-central1-c"
+network = "pery-prod"
+subnetwork = "pery-prod"

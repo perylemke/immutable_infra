@@ -32,7 +32,11 @@
       },
       {
           "type": "ansible",
-          "playbook_file": "./ansible/playbook.yml"
+          "playbook_file": "./ansible/playbook.yml",
+          "user": "admin",
+          "extra_arguments": [
+              "-e ansible_python_interpreter=/usr/bin/python3"
+          ]
       }
   ]
 }
