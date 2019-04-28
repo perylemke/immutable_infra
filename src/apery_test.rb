@@ -10,7 +10,7 @@ class MyTest < MiniTest::Unit::TestCase
 
   def test_ola_mundo
     get '/'
-    assert_equal "Olá mundo! Bem vindos ao Ruby Floripa!", last_response.body
+    assert_equal "Olá mundo! Bem vindos ao Floripa on Rails!", last_response.body
   end
 
   def test_status

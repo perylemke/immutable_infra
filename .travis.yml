@@ -29,14 +29,14 @@ install:
   - sudo apt-get install -y python-pip libssl-dev
   - sudo pip install --upgrade pip setuptools wheel
   - sudo pip install ansible
-  - cd src
-  - bundle install
 
 jobs:
   include:
     - stage: "Tests App"
       name: "Ruby Tests"
       script:
+        - cd src
+        - bundle install
         - bundle exec rake
     - stage: "Build Container Image"
       name: "Build and Push Docker Image"
@@ -61,4 +61,4 @@ jobs:
         - cd ..
         - make init
         - make deploy
-      if: branch = terraform
+      if: branch = master
