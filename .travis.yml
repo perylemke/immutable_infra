@@ -53,13 +53,11 @@ jobs:
     - stage: "Build VM image"
       name: "Build VM image with Packer"
       script:
-        - cd ..
         - make build
       if: branch = master
     - stage: "Deploy"
       name: "Deploy with Terraform"
       script:
-        - cd ..
         - make init
         - make deploy
       if: branch = master
