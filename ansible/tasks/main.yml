@@ -10,6 +10,8 @@
       - gnupg2 
       - software-properties-common
       - python-docker
+      - python-pip
+      - python3-pip
     update_cache: true
 
 - name: Upgrade System
@@ -45,6 +47,11 @@
   apt:
     name: docker-ce
     update_cache: yes
+
+- name: Install docker-py
+  pip:
+    name: docker-py
+
 
 - name: registry in Docker-Hub
   docker_login:
