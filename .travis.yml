@@ -41,6 +41,7 @@ jobs:
     - stage: "Build Container Image"
       name: "Build and Push Docker Image"
       script:
+        - cd src
         - rm -fv Gemfile.lock
         - export HASH=`date +%d%m%Y%H%M%S`
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
