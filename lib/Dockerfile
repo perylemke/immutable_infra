@@ -9,4 +9,4 @@ RUN bundle install
 ENV PORT 9292
 EXPOSE 9292
 
-CMD ["bundle", "exec", "rackup", "--host", "0.0.0.0", "-p", "9292"]
+CMD ["ruby", "apery.rb"]

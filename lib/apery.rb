@@ -1,11 +1,11 @@
-require 'sinatra/base'
+require 'sinatra'
 
-class Apery <  Sinatra::Base
-  get '/' do
+set :bind, '0.0.0.0'
+
+get '/' do
     "Olá mundo! Bem vindos ao Floripa on Rails!"
-  end
+end
 
-  get '/status' do
-    "It's Alive!"
-  end
+get '/status' do
+  "It's Alive!"
 end
