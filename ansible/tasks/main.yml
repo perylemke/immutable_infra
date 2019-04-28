@@ -14,25 +14,36 @@
       - python3-pip
     update_cache: true
 
-- name: Upgrade System
-  command: echo "LC_ALL=en_US.UTF-8" >> /etc/environment && 
-           localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 &&
-           LANG=en_US.utf8
+- name: Configure LC_ALL on /etc/environment
+  lineinfile:
+    path: /etc/environment
+    line: "LC_ALL=en_US.UTF-8"
+
+- name: Ensure a locale exists
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: Configure LANG on profile
+  lineinfile:
+    path: /etc/profile
+    line: "export LANG=en_US.utf8"
 
 - name: Kernel tunning
   sysctl:
     name: net.ipv4.ip_forward
-    value: 1
+    value: "1"
     sysctl_set: yes
     state: present
     reload: yes
 
 - name: Disallow root SSH access
-  lineinfile: dest=/etc/ssh/sshd_config
-              regexp="^PermitRootLogin"
-              line="PermitRootLogin no"
-              state=present
-  notify: Restart ssh
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    state: present
+  notify: "restart ssh"
 
 - name: Add an Apt signing key, uses whichever key is at the URL
   apt_key:
@@ -51,7 +62,6 @@
 - name: Install docker-py
   pip:
     name: docker-py
-
 
 - name: registry in Docker-Hub
   docker_login:
@@ -74,7 +84,10 @@
   become: yes
 
 - name: Apery | Create Unit file
-  template: src=apery.service.j2 dest=/etc/systemd/system/apery.service mode=0644
+  template: 
+    src: apery.service.j2 
+    dest: /etc/systemd/system/apery.service 
+    mode: 0644
   become: true
 
 - name: restart service Apery
