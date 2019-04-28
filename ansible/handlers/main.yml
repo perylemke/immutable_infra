@@ -1,2 +1,8 @@
 ---
 # handlers file for ansible
+- name: restart ssh
+  systemd:
+    name: ssh
+    state: restarted
+    enabled: true
+  listen: "restart ssh"
