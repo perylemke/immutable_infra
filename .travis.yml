@@ -48,16 +48,16 @@ jobs:
         - docker tag perylemke/apery:$HASH perylemke/apery:latest
         - docker push perylemke/apery:$HASH
         - docker push perylemke/apery
-      if: branch = master
+      if: branch = terraform
     - stage: "Build VM image"
       name: "Build VM image with Packer"
       script:
         - cd ..
         - make build
-      if: branch = master
+      if: branch = terraform
     - stage: "Deploy"
       name: "Deploy with Terraform"
       script:
         - make init
         - make deploy
-      if: branch = master
+      if: branch = terraform

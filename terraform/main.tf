@@ -32,13 +32,8 @@ resource "google_compute_instance_group_manager" "apery-group" {
   }
 
   named_port {
-      name = "${var.port_http_name}"
-      port = "${var.port_http_number}"
-  }
-
-  named_port {
-      name = "${var.port_https_name}"
-      port = "${var.port_https_number}"
+      name = "${var.port_sinatra_name}"
+      port = "${var.port_sinatra_number}"
   }
 
   update_policy { 
@@ -50,7 +45,7 @@ resource "google_compute_instance_group_manager" "apery-group" {
   }
 
   auto_healing_policies {
-    health_check      = "${google_compute_health_check.apery-http.self_link}"
+    health_check      = "${google_compute_health_check.apery-healthcheck.self_link}"
     initial_delay_sec = "${var.initial_delay_sec}"
   }
 
@@ -62,7 +57,7 @@ resource "google_compute_instance_template" "apery-template" {
   name_prefix  = "${var.name_prefix}"
   machine_type = "${var.machine_type}"
   region       = "${var.region}"
-  tags         = ["${var.tag_http}", "${var.tag_https}"]
+  tags         = ["${var.tag_sinatra}", "${var.tag_icmp}", "${var.tag_http}"]
 
   labels = {
     project     = "apery"
@@ -79,7 +74,7 @@ resource "google_compute_instance_template" "apery-template" {
     subnetwork = "${var.subnetwork}"
 
     access_config {
-      // Ephemeral IP - leaving this block empty will generate a new external IP and assign it to the machine
+      
     }
   }
 
@@ -88,7 +83,7 @@ resource "google_compute_instance_template" "apery-template" {
   }
 }
 
-resource "google_compute_health_check" "apery-health_check" {
+resource "google_compute_health_check" "apery-healthcheck" {
   name                = "${var.name_health_check}"
   check_interval_sec  = "${var.check_interval_sec}"
   timeout_sec         = "${var.timeout_sec}"
@@ -97,6 +92,6 @@ resource "google_compute_health_check" "apery-health_check" {
 
   http_health_check {
     request_path = "${var.request_path}"
-    port         = "${var.port_http_number}"
+    port         = "${var.port_sinatra_number}"
   }
 }
