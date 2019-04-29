@@ -46,3 +46,11 @@ request_path = "/status"
 
 # External IP
 ip_name = "apery-ip"
+
+# Load Balance
+lb_name = "apery-lb"
+http_proxy = "apery-http-proxy"
+backend_name = "apery-backend"
+port_name = "http"
+protocol = "HTTP"
+forwarding_rule = "apery-frontend-http"

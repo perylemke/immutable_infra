@@ -9,6 +9,7 @@ plan:
 create-infra:
 	terraform workspace select production
 	terraform apply -target=google_compute_autoscaler.apery-autoscaler -var-file=production.tfvars
+	terraform apply -target=google_compute_global_forwarding_rule.apery-forwarding-rule -var-file=production.tfvars
 
 deploy:
 	terraform workspace select production

@@ -44,3 +44,12 @@ variable "request_path" {}
 
 # External IP
 variable "ip_name" {}
+
+# Load Balance
+variable "lb_name" {}
+variable "http_proxy" {}
+variable "backend_name" {}
+variable "port_name" {}
+variable "protocol" {}
+variable "forwarding_rule" {}
+
