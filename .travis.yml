@@ -1,13 +1,11 @@
 sudo: enabled
 services: docker
 dist: trusty
-language: ruby
-
+language: go
 os:
   - linux
-
-rvm:
-  - 2.5.5
+go:
+  - '1.11'
 
 before_install:
   - echo $GOOGLE_PACKER_CREDENTIALS > $TRAVIS_BUILD_DIR/demo-infra.json
@@ -27,22 +25,20 @@ before_install:
 install:
   - sudo apt-get update
   - sudo apt-get install -y python-pip libssl-dev
-  - sudo pip install --upgrade pip setuptools wheel
+  - sudo pip install --upgrade pip setuptools wheel PyYAML six urllib3 chardet requests colorama
   - sudo pip install ansible
+  - sudo pip install molecule
 
 jobs:
   include:
     - stage: "Tests App"
-      name: "Ruby Tests"
+      name: "Go Tests"
       script:
-        - cd lib
-        - bundle install
-        - bundle exec rake
+        - make tests-app
     - stage: "Build Container Image"
       name: "Build and Push Docker Image"
       script:
-        - cd lib
-        - rm -fv Gemfile.lock
+        - cd src
         - export HASH=`date +%d%m%Y%H%M%S`
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t perylemke/apery:$HASH .
@@ -53,11 +49,13 @@ jobs:
     - stage: "Build VM image"
       name: "Build VM image with Packer"
       script:
-        - make build
+        # - make build
+        - echo "Soon!"
       if: branch = master
     - stage: "Deploy"
       name: "Deploy with Terraform"
       script:
-        - make init
-        - make deploy
+        # - make init
+        # - make deploy
+        - echo "Soon!"
       if: branch = master
