@@ -17,3 +17,6 @@ deploy:
 
 destroy:
 	@$(MAKE) -s -C terraform destroy
+
+tests-app:
+	@cd src && go test

@@ -34,8 +34,7 @@ jobs:
     - stage: "Tests App"
       name: "Go Tests"
       script:
-        - cd src
-        - go test
+        - make tests-app
     - stage: "Build Container Image"
       name: "Build and Push Docker Image"
       script:
@@ -50,11 +49,13 @@ jobs:
     - stage: "Build VM image"
       name: "Build VM image with Packer"
       script:
-        - make build
+        # - make build
+        - echo "Soon!"
       if: branch = master
     - stage: "Deploy"
       name: "Deploy with Terraform"
       script:
-        - make init
-        - make deploy
+        # - make init
+        # - make deploy
+        - echo "Soon!"
       if: branch = master
