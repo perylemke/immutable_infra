@@ -21,6 +21,7 @@ before_install:
   - sudo mv terraform /usr/local/bin
   - rm -fv terraform_0.11.13_linux_amd64.zip
   - cd ..
+  - echo $TRAVIS_BRANCH
 
 install:
   - sudo apt-get update
