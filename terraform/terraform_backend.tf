@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
     bucket  = "apery-terraform-state"
-    prefix  = "ruby-floripa-demo/apery-state"
+    prefix  = "devopsfloripa-demo/apery-state"
   }
 }

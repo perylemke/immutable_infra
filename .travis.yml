@@ -35,27 +35,36 @@ jobs:
       name: "Go Tests"
       script:
         - make tests-app
-    - stage: "Build Container Image"
+    - stage: "Build Container Image on Staging"
       name: "Build and Push Docker Image"
       script:
         - cd src
         - export HASH=`date +%d%m%Y%H%M%S`
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t perylemke/apery:$HASH .
-        - docker tag perylemke/apery:$HASH perylemke/apery:latest
+        - docker tag perylemke/apery:$HASH perylemke/apery:staging
         - docker push perylemke/apery:$HASH
+        - docker push perylemke/apery:staging
+      if: branch = staging
+    - stage: "Build Container Image on Production"
+      name: "Build and Push Docker Image on Production"
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker pull perylemke/apery:staging
+        - docker tag perylemke/apery:staging perylemke/apery:prod
+        - docker tag perylemke/apery:staging perylemke/apery
+        - docker push perylemke/apery:prod
         - docker push perylemke/apery
-      if: branch = master
+      if: branch = prod
     - stage: "Build VM image"
       name: "Build VM image with Packer"
       script:
-        # - make build
-        - echo "Soon!"
-      if: branch = master
+        - make build
+      if: branch =~ /(prod|staging)/
     - stage: "Deploy"
       name: "Deploy with Terraform"
       script:
-        # - make init
-        # - make deploy
-        - echo "Soon!"
-      if: branch = master
+        - make init
+        - make create-infra-$TRAVIS_BRANCH
+        # - deploy-$TRAVIS_BRANCH
+      if: branch =~ /(prod|staging)/

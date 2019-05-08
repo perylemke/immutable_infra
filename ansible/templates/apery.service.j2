@@ -7,7 +7,7 @@ Wants=network-online.target
 TimeoutStartSec=0
 Restart=always
 ExecStartPre=/usr/bin/docker pull perylemke/apery
-ExecStart=/usr/bin/docker run --rm -p 80:9292 --name apery perylemke/apery
+ExecStart=/usr/bin/docker run --rm -p 80:8080 --name apery perylemke/apery
 ExecStop=/usr/bin/docker stop apery
 
 [Install]

@@ -1,22 +1,39 @@
 .PHONY: build init plan production create-infra deploy destroy
 
+# Packer command
 build:
 	packer build packer/belegost.json
 
+# App tests command
+tests-app:
+	@cd src && go test
+
+# Terraform -> General Command
 init:
 	@$(MAKE) -s -C terraform init
 
-plan:
-	@$(MAKE) -s -C terraform plan
+# Terraform -> Production Commands
+plan-prod:
+	@$(MAKE) -s -C terraform plan-prod
 
-create-infra:
-	@$(MAKE) -s -C terraform create-infra
+create-infra-prod:
+	@$(MAKE) -s -C terraform create-infra-prod
 
-deploy:
-	@$(MAKE) -s -C terraform deploy
+deploy-prod:
+	@$(MAKE) -s -C terraform deploy-prod
 
-destroy:
-	@$(MAKE) -s -C terraform destroy
+destroy-prod:
+	@$(MAKE) -s -C terraform destroy-prod
 
-tests-app:
-	@cd src && go test
+# Terraform -> Staging Commands
+plan-staging:
+	@$(MAKE) -s -C terraform plan-staging
+
+create-infra-staging:
+	@$(MAKE) -s -C terraform create-infra-staging
+
+deploy-staging:
+	@$(MAKE) -s -C terraform deploy-staging
+
+destroy-staging:
+	@$(MAKE) -s -C terraform destroy-staging

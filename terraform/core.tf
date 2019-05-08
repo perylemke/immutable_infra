@@ -1,5 +1,9 @@
+data "google_compute_subnetwork" "apery-subnetwork" {
+  name = "${google_compute_subnetwork.apery-subnet.name}"
+}
+
 resource "google_compute_autoscaler" "apery-autoscaler" {
-  name   = "${var.autoscaler}"
+  name    = "${format("%s%s", "apery-autoscaler-", var.environment)}"
   zone   = "${var.zone}"
   target = "${google_compute_instance_group_manager.apery-group.self_link}"
 
@@ -20,20 +24,20 @@ resource "google_compute_autoscaler" "apery-autoscaler" {
 
 resource "google_compute_instance_group_manager" "apery-group" {
   provider           = "google-beta"
-  name               = "${var.group_name}"
-  base_instance_name = "${var.base_instance_name}"
+  name               = "${format("%s%s", "apery-instance-group-", var.environment)}"
+  base_instance_name = "${format("%s%s", "apery-instance-", var.environment)}"
   zone               = "${var.zone}"
 
   target_size  = "${var.target_size}"
 
   version {
-    name               = "${var.name_version}"
+    name               = "${format("%s%s", "apery-version-", var.environment)}"
     instance_template  = "${google_compute_instance_template.apery-template.self_link}"
   }
 
   named_port {
-      name = "${var.port_sinatra_name}"
-      port = "${var.port_sinatra_number}"
+      name = "${var.port_api_name}"
+      port = "${var.port_api_number}"
   }
 
   update_policy { 
@@ -54,10 +58,10 @@ resource "google_compute_instance_group_manager" "apery-group" {
   }
 }
 resource "google_compute_instance_template" "apery-template" {
-  name_prefix  = "${var.name_prefix}"
+  name_prefix  = "${format("%s%s%s", "apery-template-", var.environment, "-")}"
   machine_type = "${var.machine_type}"
   region       = "${var.region}"
-  tags         = ["${var.tag_sinatra}", "${var.tag_icmp}", "${var.tag_http}"]
+  tags         = ["${var.tag_icmp}", "${var.tag_http}"]
 
   labels = {
     project     = "apery"
@@ -71,10 +75,10 @@ resource "google_compute_instance_template" "apery-template" {
 
   // networking
   network_interface {
-    subnetwork = "${var.subnetwork}"
+    subnetwork = "${data.google_compute_subnetwork.apery-subnetwork.network}"
 
     access_config {
-      
+      // Ephemeral IP - leaving this block empty will generate a new external IP and assign it to the machine
     }
   }
 
@@ -82,42 +86,9 @@ resource "google_compute_instance_template" "apery-template" {
     create_before_destroy = true
   }
 }
-resource "google_compute_global_forwarding_rule" "apery-forwarding-rule" {
-  name       = "${var.forwarding_rule}"
-  target     = "${google_compute_target_http_proxy.apery-target-http-proxy.self_link}"
-  port_range = "80"
-  ip_address = "${google_compute_global_address.apery-ip.address}"
-  depends_on = ["google_compute_global_address.apery-ip"]
-}
-
-resource "google_compute_global_address" "apery-ip" {
-  name = "${var.ip_name}"
-}
-
-resource "google_compute_target_http_proxy" "apery-target-http-proxy" {
-  name        = "${var.http_proxy}"
-  url_map     = "${google_compute_url_map.apery-lb.self_link}"
-}
-
-resource "google_compute_url_map" "apery-lb" {
-  name        = "${var.lb_name}"
-  default_service = "${google_compute_backend_service.apery-backend.self_link}"
-}
-
-resource "google_compute_backend_service" "apery-backend" {
-  name        = "${var.backend_name}"
-  port_name   = "${var.port_name}"
-  protocol    = "${var.protocol}"
-  timeout_sec = 30
-  health_checks = ["${google_compute_health_check.apery-healthcheck.self_link}"]
-
-  backend {
-    group = "${google_compute_instance_group_manager.apery-group.instance_group}"
-  }
-}
 
 resource "google_compute_health_check" "apery-healthcheck" {
-  name                = "${var.name_health_check}"
+  name                = "${format("%s%s", "apery-healthcheck-", var.environment)}"
   check_interval_sec  = "${var.check_interval_sec}"
   timeout_sec         = "${var.timeout_sec}"
   healthy_threshold   = "${var.healthy_threshold}"
@@ -125,6 +96,6 @@ resource "google_compute_health_check" "apery-healthcheck" {
 
   http_health_check {
     request_path = "${var.request_path}"
-    port         = "${var.port_sinatra_number}"
+    port         = "${var.port_api_number}"
   }
 }

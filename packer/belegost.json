@@ -1,25 +1,26 @@
 {
     "variables": {
         "packer_build_number": "belegost",
+        "deploy_env": "{{env `TRAVIS_BRANCH`}}",
         "project_id": "perylemke",
         "zone": "us-central1-c",
         "version": "{{timestamp}}"
     },
-    "description": "Belegost - Sinatra Hello App Image",
+    "description": "Belegost - Hello App Image",
     "builders": [
       {
             "type": "googlecompute",
             "project_id": "perylemke",
             "source_image_family": "debian-9",
-            "image_name": "{{user `packer_build_number`}}-{{user `version`}}",
-            "network": "pery-prod",
-            "subnetwork": "pery-prod",
+            "image_name": "{{user `packer_build_number`}}-{{user `deploy_env`}}-{{user `version`}}",
+            "network": "demo-pery-dev",
+            "subnetwork": "demo-pery-dev",
             "tags": ["ssh"],
             "ssh_username": "admin",
             "zone": "{{user `zone`}}",
             "disk_size": 10,
-            "image_family": "{{user `packer_build_number`}}",
-            "image_description": "Belegost - Sinatra Hello App Image" 
+            "image_family": "{{user `packer_build_number`}}-{{user `deploy_env`}}",
+            "image_description": "Belegost - Hello App Image" 
       }
     ],
     "provisioners": [
