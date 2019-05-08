@@ -1,22 +1,44 @@
-.PHONY: init create-infra plan deploy destroy
+.PHONY: init plan-prod create-infra-prod deploy-prod destroy-prod plan-staging create-infra-staging deploy-staging destroy-staging plan-dev create-infra-dev deploy-dev destroy-dev
 
 init:
 	terraform init
 
-plan:
-	terraform plan -var-file=production.tfvars
+# Production commands
 
-create-infra:
-	terraform workspace select production
-	terraform apply -target=google_compute_autoscaler.apery-autoscaler -var-file=production.tfvars
-	terraform apply -target=google_compute_global_forwarding_rule.apery-forwarding-rule -var-file=production.tfvars
+plan-prod:
+	terraform workspace new prod
+	terraform plan -var-file=prod.tfvars
 
-deploy:
-	terraform workspace select production
+create-infra-prod:
+	terraform workspace select prod
+	terraform apply -var-file=prod.tfvars
+
+deploy-prod:
+	terraform workspace select prod
 	terraform state rm google_compute_instance_template.apery-template
-	terraform apply -target=google_compute_instance_template.apery-template -var-file=production.tfvars -auto-approve
-	terraform apply -target=google_compute_instance_group_manager.apery-group -var-file=production.tfvars -auto-approve
+	terraform apply -target=google_compute_instance_template.apery-template -var-file=prod.tfvars -auto-approve
+	terraform apply -target=google_compute_instance_group_manager.apery-group -var-file=prod.tfvars -auto-approve
 
-destroy:
-	terraform workspace select production
-	terraform destroy -var-file=production.tfvars
+destroy-prod:
+	terraform workspace select prod
+	terraform destroy -var-file=prod.tfvars
+
+# Staging Commands
+
+plan-staging:
+	terraform workspace new staging
+	terraform plan -var-file=staging.tfvars
+
+create-infra-staging:
+	terraform workspace select staging
+	terraform apply -var-file=production.tfvars
+
+deploy-staging:
+	terraform workspace select staging
+	terraform state rm google_compute_instance_template.apery-template
+	terraform apply -target=google_compute_instance_template.apery-template -var-file=staging.tfvars -auto-approve
+	terraform apply -target=google_compute_instance_group_manager.apery-group -var-file=staging.tfvars -auto-approve
+
+destroy-staging:
+	terraform workspace select staging
+	terraform destroy -var-file=staging.tfvars
