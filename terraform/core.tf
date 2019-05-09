@@ -70,7 +70,7 @@ resource "google_compute_instance_template" "apery-template" {
 
   // boot disk
   disk {
-    source_image = "${var.image}"
+    source_image = "${format("%s%s", var.image, var.environment)}"
   }
 
   // networking
