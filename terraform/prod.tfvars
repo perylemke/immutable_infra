@@ -23,7 +23,7 @@ initial_delay_sec = 50
 # Template Instance Vars
 machine_type = "g1-small"
 environment = "prod"
-image = "belegost"
+image = "belegost-"
 
 # Healthcheck Vars
 check_interval_sec = "5"
