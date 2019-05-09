@@ -61,7 +61,7 @@ resource "google_compute_instance_template" "apery-template" {
   name_prefix  = "${format("%s%s%s", "apery-template-", var.environment, "-")}"
   machine_type = "${var.machine_type}"
   region       = "${var.region}"
-  tags         = ["${var.tag_icmp}", "${var.tag_http}"]
+  tags         = ["${var.tag_icmp}", "${var.tag_http_https}"]
 
   labels = {
     project     = "apery"

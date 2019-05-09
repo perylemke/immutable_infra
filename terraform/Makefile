@@ -26,12 +26,12 @@ destroy-prod:
 # Staging Commands
 
 plan-staging:
-	terraform workspace new staging
+	terraform workspace select staging
 	terraform plan -var-file=staging.tfvars
 
 create-infra-staging:
 	terraform workspace select staging
-	terraform apply -var-file=production.tfvars
+	terraform apply -var-file=staging.tfvars
 
 deploy-staging:
 	terraform workspace select staging

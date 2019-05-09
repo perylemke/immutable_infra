@@ -32,6 +32,9 @@ healthy_threshold = "2"
 unhealthy_threshold = "2"
 request_path = "/status"
 
+# Network
+ip_range = "10.80.0.0/20"
+
 # Load Balance
 protocol = "HTTP"
 
@@ -41,3 +44,4 @@ http_https_port = ["80", "443"]
 tag_ssh = "ssh"
 tag_icmp = "icmp"
 tag_http_https = "http-https"
+allow_all_ranges = "0.0.0.0/0"

@@ -2,19 +2,19 @@
     "variables": {
         "packer_build_number": "belegost",
         "deploy_env": "{{env `TRAVIS_BRANCH`}}",
-        "project_id": "perylemke",
-        "zone": "us-central1-c",
+        "project_id": "{{env `GOOGLE_PROJECT`}}",
+        "zone": "{{env `GOOGLE_ZONE`}}",
         "version": "{{timestamp}}"
     },
     "description": "Belegost - Hello App Image",
     "builders": [
       {
             "type": "googlecompute",
-            "project_id": "perylemke",
+            "project_id": "{{user `project_id`}}",
             "source_image_family": "debian-9",
             "image_name": "{{user `packer_build_number`}}-{{user `deploy_env`}}-{{user `version`}}",
-            "network": "demo-pery-dev",
-            "subnetwork": "demo-pery-dev",
+            "network": "demo-apery-staging",
+            "subnetwork": "demo-apery-staging",
             "tags": ["ssh"],
             "ssh_username": "admin",
             "zone": "{{user `zone`}}",
