@@ -65,5 +65,5 @@ jobs:
       name: "Deploy with Terraform"
       script:
         - make init
-        - deploy-$TRAVIS_BRANCH
+        - make deploy-$TRAVIS_BRANCH
       if: branch =~ /(prod|staging)/
