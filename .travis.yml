@@ -27,7 +27,7 @@ install:
   - sudo apt-get install -y python-pip libssl-dev
   - sudo pip install --upgrade pip setuptools wheel PyYAML six urllib3 chardet requests colorama
   - sudo pip install ansible
-  - sudo pip install molecule
+  # - sudo pip install molecule
 
 jobs:
   include:
@@ -65,6 +65,5 @@ jobs:
       name: "Deploy with Terraform"
       script:
         - make init
-        - make create-infra-$TRAVIS_BRANCH
-        # - deploy-$TRAVIS_BRANCH
+        - deploy-$TRAVIS_BRANCH
       if: branch =~ /(prod|staging)/
