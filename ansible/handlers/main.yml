@@ -5,4 +5,15 @@
     name: ssh
     state: restarted
     enabled: true
+  become: true
   listen: "restart ssh"
+
+- name: restart apery
+  systemd:
+    state: started
+    daemon_reload: true
+    name: apery
+    enabled: true
+    masked: false
+  become: true
+  listen: "restart apery"
