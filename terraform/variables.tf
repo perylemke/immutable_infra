@@ -32,12 +32,17 @@ variable "healthy_threshold" {}
 variable "unhealthy_threshold" {}
 variable "request_path" {}
 
+# Network
+variable "ip_range" {}
+
 # Load Balance
 variable "protocol" {}
 
 # Firewall
 variable "ssh_port" {}
-variable "http_https_port" {}
+variable "http_port" {}
+variable "https_port" {}
 variable "tag_ssh" {}
 variable "tag_icmp" {}
 variable "tag_http_https" {}
+variable "allow_all_ranges" {}

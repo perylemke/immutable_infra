@@ -1,4 +1,6 @@
 ---
+env: "{{ lookup('env', 'TRAVIS_BRANCH')}}"
+
 docker_username: "{{ lookup('env', 'DOCKER_USERNAME')}}"
 
 docker_password: "{{ lookup('env', 'DOCKER_PASSWORD')}}"

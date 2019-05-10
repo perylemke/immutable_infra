@@ -7,7 +7,7 @@ import (
 )
 
 func helloWorld(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Bem vindos ao DevOps Floripa! :)")
+	fmt.Fprintf(w, "Bem vindos ao Docker Floripa! :)")
 	log.Println("Endpoint: /")
 }
 

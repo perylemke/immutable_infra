@@ -6,9 +6,15 @@ Wants=network-online.target
 [Service]
 TimeoutStartSec=0
 Restart=always
-ExecStartPre=/usr/bin/docker pull perylemke/apery
-ExecStart=/usr/bin/docker run --rm -p 80:8080 --name apery perylemke/apery
+{% if env == 'prod' %}
+ExecStartPre=/usr/bin/docker pull perylemke/apery:prod
+ExecStart=/usr/bin/docker run --rm -p 80:8080 --name apery perylemke/apery:prod
 ExecStop=/usr/bin/docker stop apery
+{% elif env == 'staging' %}
+ExecStartPre=/usr/bin/docker pull perylemke/apery:staging
+ExecStart=/usr/bin/docker run --rm -p 80:8080 --name apery perylemke/apery:staging
+ExecStop=/usr/bin/docker stop apery
+{% endif %}
 
 [Install]
 WantedBy=multi-user.target

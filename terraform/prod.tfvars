@@ -23,7 +23,7 @@ initial_delay_sec = 50
 # Template Instance Vars
 machine_type = "g1-small"
 environment = "prod"
-image = "belegost"
+image = "belegost-"
 
 # Healthcheck Vars
 check_interval_sec = "5"
@@ -32,12 +32,17 @@ healthy_threshold = "2"
 unhealthy_threshold = "2"
 request_path = "/status"
 
+# Network
+ip_range = "10.80.0.0/20"
+
 # Load Balance
 protocol = "HTTP"
 
 # Firewall
-ssh_port = ["22"]
-http_https_port = ["80", "443"]
+ssh_port = "22"
+http_port = "80"
+https_port = "443"
 tag_ssh = "ssh"
 tag_icmp = "icmp"
 tag_http_https = "http-https"
+allow_all_ranges = "0.0.0.0/0"

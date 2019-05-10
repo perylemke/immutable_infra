@@ -4,9 +4,8 @@ init:
 	terraform init
 
 # Production commands
-
 plan-prod:
-	terraform workspace new prod
+	terraform workspace select prod
 	terraform plan -var-file=prod.tfvars
 
 create-infra-prod:
@@ -16,28 +15,25 @@ create-infra-prod:
 deploy-prod:
 	terraform workspace select prod
 	terraform state rm google_compute_instance_template.apery-template
-	terraform apply -target=google_compute_instance_template.apery-template -var-file=prod.tfvars -auto-approve
-	terraform apply -target=google_compute_instance_group_manager.apery-group -var-file=prod.tfvars -auto-approve
+	terraform apply -var-file=prod.tfvars -auto-approve
 
 destroy-prod:
 	terraform workspace select prod
 	terraform destroy -var-file=prod.tfvars
 
 # Staging Commands
-
 plan-staging:
-	terraform workspace new staging
+	terraform workspace select staging
 	terraform plan -var-file=staging.tfvars
 
 create-infra-staging:
 	terraform workspace select staging
-	terraform apply -var-file=production.tfvars
+	terraform apply -var-file=staging.tfvars
 
 deploy-staging:
 	terraform workspace select staging
 	terraform state rm google_compute_instance_template.apery-template
-	terraform apply -target=google_compute_instance_template.apery-template -var-file=staging.tfvars -auto-approve
-	terraform apply -target=google_compute_instance_group_manager.apery-group -var-file=staging.tfvars -auto-approve
+	terraform apply -var-file=staging.tfvars -auto-approve
 
 destroy-staging:
 	terraform workspace select staging

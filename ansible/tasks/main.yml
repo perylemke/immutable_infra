@@ -7,7 +7,9 @@
       - apt-transport-https
       - ca-certificates
       - curl
-      - gnupg2 
+      - gnupg2
+      - locales
+      - openssh-server
       - software-properties-common
       - python-docker
       - python-pip
@@ -38,7 +40,7 @@
     reload: yes
 
 - name: Disallow root SSH access
-  lineinfile: 
+  lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: "^PermitRootLogin"
     line: "PermitRootLogin no"
@@ -50,7 +52,7 @@
     url: https://download.docker.com/linux/debian/gpg
     state: present
 
-- name: Add Docker repo 
+- name: Add Docker repo
   apt_repository:
     repo: "{{ docker_apt_repository }}"
 
@@ -62,6 +64,11 @@
 - name: Install docker-py
   pip:
     name: docker-py
+
+- name: restart docker
+  service:
+    name: docker
+    state: started
 
 - name: registry in Docker-Hub
   docker_login:
@@ -89,12 +96,4 @@
     dest: /etc/systemd/system/apery.service 
     mode: 0644
   become: true
-
-- name: restart service Apery
-  systemd:
-    state: started
-    daemon_reload: true
-    name: apery
-    enabled: true
-    masked: false
-  become: true
+  notify: "restart apery"
