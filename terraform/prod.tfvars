@@ -4,18 +4,18 @@ region = "us-central1"
 zone = "us-central1-c"
 
 # Autoscaler Vars
-max_replicas = 3
-min_replicas = 1
+max_replicas = 6
+min_replicas = 3
 cooldown_period = 60
 target_cpu = 0.8
 
 # Instance Group Vars
-target_size = 1
+target_size = 3
 port_api_name = "http"
 port_api_number = 80
 type_update = "PROACTIVE"
 minimal_action = "REPLACE"
-max_surge_fixed = 1
+max_surge_fixed = 3
 max_unavailable_fixed = 0
 min_ready_sec = 0
 initial_delay_sec = 50

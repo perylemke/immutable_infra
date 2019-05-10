@@ -4,10 +4,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
 func helloWorld(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Bem vindos ao Docker Floripa! :)")
+	name, err := os.Hostname()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Fprintf(w, "Olá %s! Bem vindo ao Docker Floripa! :)", name)
 	log.Println("Endpoint: /")
 }
 
