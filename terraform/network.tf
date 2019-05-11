@@ -1,3 +1,5 @@
+# Network
+
 resource "google_compute_network" "apery-network" {
   name                    = "${format("%s%s", "demo-apery-", var.environment)}"
   auto_create_subnetworks = false
@@ -8,6 +10,8 @@ resource "google_compute_subnetwork" "apery-subnet" {
   region        = "${var.region}"
   network       = "${google_compute_network.apery-network.self_link}"
 }
+
+# Firewall
 
 resource "google_compute_firewall" "ssh" {
   name    = "${format("%s%s", "ssh-firewall-", var.environment)}"

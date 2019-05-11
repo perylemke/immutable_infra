@@ -2,6 +2,8 @@ data "google_compute_subnetwork" "apery-subnetwork" {
   name = "${google_compute_subnetwork.apery-subnet.name}"
 }
 
+# App Infra
+
 resource "google_compute_autoscaler" "apery-autoscaler" {
   name    = "${format("%s%s", "apery-autoscaler-", var.environment)}"
   zone   = "${var.zone}"
@@ -86,6 +88,8 @@ resource "google_compute_instance_template" "apery-template" {
     create_before_destroy = true
   }
 }
+
+#  Load Balance
 
 resource "google_compute_global_forwarding_rule" "apery-forwarding-rule" {
   name       = "${format("%s%s", "apery-frontend-http-", var.environment)}"
