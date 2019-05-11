@@ -12,7 +12,7 @@ func helloWorld(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Fprintf(w, "Olá %s! Bem vindo ao Docker Floripa! :)", name)
+	fmt.Fprintf(w, "Olá %s! Bem vindo ao DevOps Floripa! :)", name)
 	log.Println("Endpoint: /")
 }
 
