@@ -65,10 +65,10 @@ func TestHealthCheck(t *testing.T) {
 			status, http.StatusOK)
 	}
 
-	// // Check the response body is what we expect.
-	// expected := "It's Alive!"
-	// if rr.Body.String() != expected {
-	// 	t.Errorf("handler returned unexpected body: got %v want %v",
-	// 		rr.Body.String(), expected)
-	// }
+	// Check the response body is what we expect.
+	expected := "It's Alive!"
+	if rr.Body.String() != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v",
+			rr.Body.String(), expected)
+	}
 }

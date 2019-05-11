@@ -42,28 +42,18 @@ jobs:
         - export HASH=`date +%d%m%Y%H%M%S`
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t perylemke/apery:$HASH .
-        - docker tag perylemke/apery:$HASH perylemke/apery:staging
+        - docker tag perylemke/apery:$HASH perylemke/apery
         - docker push perylemke/apery:$HASH
-        - docker push perylemke/apery:staging
-      if: branch = staging
-    - stage: "Build Container Image on Production"
-      name: "Build and Push Docker Image on Production"
-      script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker pull perylemke/apery:staging
-        - docker tag perylemke/apery:staging perylemke/apery:prod
-        - docker tag perylemke/apery:staging perylemke/apery
-        - docker push perylemke/apery:prod
         - docker push perylemke/apery
-      if: branch = prod
+      if: branch = master
     - stage: "Build VM image"
       name: "Build VM image with Packer"
       script:
         - make build
-      if: branch =~ /(prod|staging)/
+      if: branch = master
     - stage: "Deploy"
       name: "Deploy with Terraform"
       script:
         - make init
-        - make deploy-$TRAVIS_BRANCH
-      if: branch =~ /(prod|staging)/
+        - make deploy-$DEPLOY_ENV
+      if: branch = master

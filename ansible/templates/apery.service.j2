@@ -7,8 +7,8 @@ Wants=network-online.target
 TimeoutStartSec=0
 Restart=always
 {% if env == 'prod' %}
-ExecStartPre=/usr/bin/docker pull perylemke/apery:prod
-ExecStart=/usr/bin/docker run --rm -p 80:8080 --name apery perylemke/apery:prod
+ExecStartPre=/usr/bin/docker pull perylemke/apery
+ExecStart=/usr/bin/docker run --rm -p 80:8080 --name apery perylemke/apery
 ExecStop=/usr/bin/docker stop apery
 {% elif env == 'staging' %}
 ExecStartPre=/usr/bin/docker pull perylemke/apery:staging
