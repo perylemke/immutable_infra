@@ -91,9 +91,9 @@
   become: yes
 
 - name: Apery | Create Unit file
-  template: 
-    src: apery.service.j2 
-    dest: /etc/systemd/system/apery.service 
+  template:
+    src: apery.service.j2
+    dest: /etc/systemd/system/apery.service
     mode: 0644
   become: true
   notify: "restart apery"
