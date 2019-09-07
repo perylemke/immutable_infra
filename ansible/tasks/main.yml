@@ -1,5 +1,5 @@
 ---
-- name: install packages depencies for Docker
+- name: Install packages depencies for Docker
   apt:
     name: "{{ packages }}"
   vars:
@@ -15,11 +15,13 @@
       - python-pip
       - python3-pip
     update_cache: true
+  become: true
 
 - name: Configure LC_ALL on /etc/environment
   lineinfile:
     path: /etc/environment
     line: "LC_ALL=en_US.UTF-8"
+  become: true
 
 - name: Ensure a locale exists
   locale_gen:
@@ -30,6 +32,7 @@
   lineinfile:
     path: /etc/profile
     line: "export LANG=en_US.utf8"
+  become: true
 
 - name: Kernel tunning
   sysctl:
@@ -38,48 +41,44 @@
     sysctl_set: yes
     state: present
     reload: yes
-
-- name: Disallow root SSH access
-  lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: "^PermitRootLogin"
-    line: "PermitRootLogin no"
-    state: present
-  notify: "restart ssh"
+  become: true
 
 - name: Add an Apt signing key, uses whichever key is at the URL
   apt_key:
     url: https://download.docker.com/linux/debian/gpg
     state: present
+  become: true
 
 - name: Add Docker repo
   apt_repository:
     repo: "{{ docker_apt_repository }}"
+  become: true
 
 - name: Update repositories cache and install "docker" package
   apt:
     name: docker-ce
     update_cache: yes
+  become: true
 
 - name: Install docker-py
   pip:
     name: docker-py
-
-- name: restart docker
-  service:
-    name: docker
-    state: started
-
-- name: registry in Docker-Hub
-  docker_login:
-    username: "{{ docker_username }}"
-    password: "{{ docker_password }}"
+    state: present
+  become: true
+  notify: "start docker"
 
 - name: Add specific users to "docker" group
   user:
     name: "admin"
     groups: "docker"
     append: True
+  become: yes
+
+- name: registry in Docker-Hub
+  docker_login:
+    username: "{{ docker_username }}"
+    password: "{{ docker_password }}"
+  become: yes
 
 - name: Allow 'admin' group to have passwordless sudo
   lineinfile:
@@ -96,4 +95,4 @@
     dest: /etc/systemd/system/apery.service
     mode: 0644
   become: true
-  notify: "restart apery"
+  notify: "start apery"

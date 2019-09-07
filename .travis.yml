@@ -26,8 +26,7 @@ install:
   - sudo apt-get update
   - sudo apt-get install -y python-pip libssl-dev
   - sudo pip install --upgrade pip setuptools wheel PyYAML six urllib3 chardet requests colorama
-  - sudo pip install ansible
-  # - sudo pip install molecule
+  - sudo pip install ansible molecule testinfra
 
 jobs:
   include:
@@ -45,6 +44,11 @@ jobs:
         - docker tag perylemke/apery:$HASH perylemke/apery
         - docker push perylemke/apery:$HASH
         - docker push perylemke/apery
+      if: branch = master
+    - stage: "Tests Infra"
+      name: "Molecule Infra Tests"
+      script:
+        - make tests-infra
       if: branch = master
     - stage: "Build VM image"
       name: "Build VM image with Packer"

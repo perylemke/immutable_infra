@@ -1,0 +1,34 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: gce
+lint:
+  name: yamllint
+platforms:
+  - name: test-instance
+    zone: us-central1-c
+    machine_type: f1-micro
+    image: debian-9
+provisioner:
+  name: ansible
+  log: True
+  lint:
+    name: ansible-lint
+scenario:
+  name: default
+  test_sequence:
+    - lint
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - side_effect
+    - verify
+    - destroy
+verifier:
+  name: testinfra
+  options:
+    sudo: True
+  lint:
+    name: flake8

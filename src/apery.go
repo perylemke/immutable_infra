@@ -12,7 +12,7 @@ func helloWorld(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Fprintf(w, "Olá %s! Bem vindo ao Floripa Tech Day 2019! :)", name)
+	fmt.Fprintf(w, "Olá %s! Abra a sua mente! :)", name)
 	log.Println("Endpoint: /")
 }
 

@@ -8,6 +8,10 @@ build:
 tests-app:
 	@cd src && go test
 
+# Molecule Tests
+tests-infra:
+	@cd ansible && molecule test
+
 # Terraform -> General Command
 init:
 	@$(MAKE) -s -C terraform init

@@ -2,7 +2,7 @@
     "variables": {
         "packer_build_number": "belegost",
         "deploy_env": "{{env `DEPLOY_ENV`}}",
-        "project_id": "{{env `GOOGLE_PROJECT`}}",
+        "project_id": "{{env `GCE_PROJECT_ID`}}",
         "zone": "{{env `GOOGLE_ZONE`}}",
         "version": "{{timestamp}}"
     },

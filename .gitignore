@@ -59,5 +59,10 @@ override.tf.json
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
+.env
+
+### Testinfra ###
+__pycache__/
+.pytest_cache/
 
 # End of https://www.gitignore.io/api/go,packer,ansible,terraform
