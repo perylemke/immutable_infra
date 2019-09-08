@@ -1,5 +1,5 @@
 # General Vars
-project = "floripatechday2019"
+project = "immutable-infra"
 region = "us-central1"
 zone = "us-central1-c"
 

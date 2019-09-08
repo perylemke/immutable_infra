@@ -1,6 +1,7 @@
 terraform {
   backend "gcs" {
-    bucket  = "apery-terraform-state"
-    prefix  = "tf-state/apery-state"
+    bucket = "immutableinfra-tf-state"
+    prefix = "tf-state/apery-state"
   }
 }
+
