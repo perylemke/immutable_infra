@@ -6,7 +6,7 @@ build:
 
 # App tests command
 tests-app:
-	@cd src && go test
+	@cd src && pip install -r requirements.txt && python -m pytest
 
 # Molecule Tests
 tests-infra:

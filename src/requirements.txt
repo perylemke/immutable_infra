@@ -1,0 +1,4 @@
+Flask==1.1.1
+flask-restplus==0.12.1
+pytest==5.0.1
+gunicorn==19.9.0

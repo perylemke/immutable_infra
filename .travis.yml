@@ -1,11 +1,11 @@
 sudo: enabled
 services: docker
 dist: trusty
-language: go
+language: python
 os:
   - linux
-go:
-  - '1.11'
+python:
+  - "3.6"
 
 before_install:
   - echo $GOOGLE_PACKER_CREDENTIALS > $TRAVIS_BUILD_DIR/demo-infra.json
@@ -25,15 +25,14 @@ before_install:
 install:
   - sudo apt-get update
   - sudo apt-get install -y python-pip libssl-dev
-  - sudo apt-get install python2.7 python3.7
   - sudo pip install --upgrade pip setuptools wheel PyYAML six urllib3 chardet requests colorama
-  - sudo pip install ansible testinfra
-  - pip install --user molecule
+  - pip install ansible 
+  - pip install molecule testinfra
 
 jobs:
   include:
-    - stage: "Tests App"
-      name: "Go Tests"
+    - stage: "API Tests"
+      name: "PyTest Tests"
       script:
         - make tests-app
     - stage: "Build Container Image on Staging"
@@ -47,7 +46,7 @@ jobs:
         - docker push perylemke/apery:$HASH
         - docker push perylemke/apery
       if: branch = master
-    - stage: "Tests Infra"
+    - stage: "Infra Tests"
       name: "Molecule Infra Tests"
       script:
         - make tests-infra
