@@ -6,10 +6,13 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: test-instance
+  - name: immutable-infra-molecule-tdd
     zone: us-central1-c
     machine_type: f1-micro
     image: debian-9
+    network: demo-apery-${DEPLOY_ENV}
+    subnetwork: demo-apery-${DEPLOY_ENV}
+    tags: ssh
 provisioner:
   name: ansible
   log: True
