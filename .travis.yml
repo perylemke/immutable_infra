@@ -6,11 +6,6 @@ os:
   - linux
 go:
   - '1.11'
-addons:
-  apt:
-    packages:
-    - python2.7
-    - python3.7
 
 before_install:
   - echo $GOOGLE_PACKER_CREDENTIALS > $TRAVIS_BUILD_DIR/demo-infra.json
@@ -30,6 +25,7 @@ before_install:
 install:
   - sudo apt-get update
   - sudo apt-get install -y python-pip libssl-dev
+  - sudo apt-get install python2.7 python3.7
   - sudo pip install --upgrade pip setuptools wheel PyYAML six urllib3 chardet requests colorama
   - sudo pip install ansible testinfra
   - pip install --user molecule
