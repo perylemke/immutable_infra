@@ -27,8 +27,8 @@ install:
   - sudo apt-get update
   - sudo apt-get install -y python-pip libssl-dev
   - sudo pip install --upgrade pip setuptools wheel PyYAML six urllib3 chardet requests colorama pytest
-  - pip install --user ansible testinfra
-  - pip install --user molecule
+  - pip install ansible testinfra
+  - pip install molecule
 
 jobs:
   include:
