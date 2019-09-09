@@ -5,7 +5,8 @@ language: python
 os:
   - linux
 python:
-  - "3.7"
+  - "2.7"
+  - "3.6"
 
 before_install:
   - echo $GOOGLE_PACKER_CREDENTIALS > $TRAVIS_BUILD_DIR/demo-infra.json
@@ -31,8 +32,8 @@ install:
 
 jobs:
   include:
-    - stage: "Tests App"
-      name: "Go Tests"
+    - stage: "API Tests"
+      name: "PyTest Tests"
       script:
         - make tests-app
     - stage: "Build Container Image on Staging"
