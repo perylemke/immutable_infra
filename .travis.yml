@@ -6,6 +6,11 @@ os:
   - linux
 go:
   - '1.11'
+addons:
+  apt:
+    packages:
+    - python2.7
+    - python3.7
 
 before_install:
   - echo $GOOGLE_PACKER_CREDENTIALS > $TRAVIS_BUILD_DIR/demo-infra.json
