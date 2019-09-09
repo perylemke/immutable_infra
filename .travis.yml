@@ -12,22 +12,22 @@ before_install:
   - export GOOGLE_APPLICATION_CREDENTIALS=$TRAVIS_BUILD_DIR/demo-infra.json
   - sudo apt-get update && sudo apt-get install -y curl
   - mkdir bin && cd bin
-  - curl -L -o packer_1.4.0_linux_amd64.zip https://releases.hashicorp.com/packer/1.4.0/packer_1.4.0_linux_amd64.zip
-  - sudo unzip packer_1.4.0_linux_amd64.zip
+  - curl -L -o packer_1.4.3_linux_amd64.zip https://releases.hashicorp.com/packer/1.4.3/packer_1.4.3_linux_amd64.zip
+  - sudo unzip packer_1.4.3_linux_amd64.zip
   - sudo mv packer /usr/local/bin/
-  - rm packer_1.4.0_linux_amd64.zip
-  - curl -L -o terraform_0.11.13_linux_amd64.zip https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
-  - sudo unzip terraform_0.11.13_linux_amd64.zip
+  - rm packer_1.4.3_linux_amd64.zip
+  - curl -L -o terraform_0.12.8_linux_amd64.zip https://releases.hashicorp.com/terraform/0.12.8/terraform_0.12.8_linux_amd64.zip
+  - sudo unzip terraform_0.12.8_linux_amd64.zip
   - sudo mv terraform /usr/local/bin
-  - rm -fv terraform_0.11.13_linux_amd64.zip
+  - rm -fv terraform_0.12.8_linux_amd64.zip
   - cd ..
 
 install:
   - sudo apt-get update
   - sudo apt-get install -y python-pip libssl-dev
   - sudo pip install --upgrade pip setuptools wheel PyYAML six urllib3 chardet requests colorama
-  - sudo pip install ansible
-  # - sudo pip install molecule
+  - sudo pip install ansible testinfra
+  - pip install --user molecule
 
 jobs:
   include:
@@ -45,6 +45,11 @@ jobs:
         - docker tag perylemke/apery:$HASH perylemke/apery
         - docker push perylemke/apery:$HASH
         - docker push perylemke/apery
+      if: branch = master
+    - stage: "Tests Infra"
+      name: "Molecule Infra Tests"
+      script:
+        - make tests-infra
       if: branch = master
     - stage: "Build VM image"
       name: "Build VM image with Packer"

@@ -1,19 +1,19 @@
 ---
 # handlers file for ansible
-- name: restart ssh
-  systemd:
-    name: ssh
-    state: restarted
-    enabled: true
-  become: true
-  listen: "restart ssh"
-
-- name: restart apery
+- name: Ensure start docker
   systemd:
     state: started
-    daemon_reload: true
-    name: apery
-    enabled: true
-    masked: false
+    name: docker
+    enabled: yes
+  listen: "start docker"
   become: true
-  listen: "restart apery"
+
+- name: Ensure start apery
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: apery
+    enabled: yes
+    masked: no
+  listen: "start apery"
+  become: true
