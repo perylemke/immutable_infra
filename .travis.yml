@@ -5,7 +5,6 @@ language: python
 os:
   - linux
 python:
-  - "2.7"
   - "3.6"
 
 before_install:
@@ -27,8 +26,8 @@ install:
   - sudo apt-get update
   - sudo apt-get install -y python-pip libssl-dev
   - sudo pip install --upgrade pip setuptools wheel PyYAML six urllib3 chardet requests colorama pytest
-  - pip install ansible testinfra
-  - pip install molecule
+  - pip install ansible 
+  - pip install molecule testinfra
 
 jobs:
   include:
