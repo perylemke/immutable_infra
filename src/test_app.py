@@ -8,14 +8,14 @@ import os.path
 def test_get_status_code():
     app.config["TESTING"] = True
     with app.test_client() as client:
-        response = client.get("/teste")
+        response = client.get("/request")
         assert response.status_code == 200
 
 def test_get_status_msg():
     app.config["TESTING"] = True
     host = socket.gethostname()
     with app.test_client() as client:
-        response = client.get("/teste")
+        response = client.get("/request")
         assert response.json == {
             'response': "Olá " + host + "! " + "A resposta é 42!"
         }
