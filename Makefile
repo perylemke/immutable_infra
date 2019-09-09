@@ -6,7 +6,7 @@ build:
 
 # App tests command
 tests-app:
-	@cd src && go test
+	@cd src && python -m pytest
 
 # Molecule Tests
 tests-infra:

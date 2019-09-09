@@ -1,9 +1,19 @@
-FROM golang:1.11 as builder
-WORKDIR /go/src/github.com/perylemke/apery/
-COPY apery.go .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o apery .
+FROM python:3.6-alpine as base
 
-FROM scratch
-WORKDIR /apery/
-COPY --from=builder /go/src/github.com/perylemke/apery/apery .
-CMD ["./apery"]
+FROM base as builder
+
+RUN mkdir /install
+WORKDIR /install
+
+COPY requirements.txt /requirements.txt
+
+RUN pip install --install-option="--prefix=/install" -r /requirements.txt
+
+# MultiStage
+FROM base
+
+COPY --from=builder /install /usr/local
+COPY . /src
+WORKDIR /src
+
+CMD ["gunicorn", "--workers=2", "-b", "0.0.0.0:5000", "--access-logfile=-", "app:app"]
