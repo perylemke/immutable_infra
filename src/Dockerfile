@@ -16,4 +16,4 @@ COPY --from=builder /install /usr/local
 COPY . /src
 WORKDIR /src
 
-CMD ["gunicorn", "--workers=2", "-b", "0.0.0.0:5000", "--access-logfile=-", "app:app"]
+CMD ["gunicorn", "--workers=2", "-b", "0.0.0.0:8080", "--access-logfile=-", "app:app"]
