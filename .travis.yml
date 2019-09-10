@@ -61,7 +61,7 @@ jobs:
         - gsutil cp gs://dogma-apery/google_compute_engine.pub $HOME/.ssh/google_compute_engine.pub
         - chmod 644 $HOME/.ssh/google_compute_engine.pub
         - make tests-infra
-      if: branch = fix_molecule
+      if: branch = master
     - stage: "Build VM image"
       name: "Build VM image with Packer"
       script:
