@@ -51,6 +51,15 @@ jobs:
     - stage: "Infra Tests"
       name: "Molecule Infra Tests"
       script:
+        - mkdir -p $HOME/.ssh
+        - gcloud version || true
+        - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash > /dev/null; fi
+        - source $HOME/google-cloud-sdk/path.bash.inc
+        - gcloud auth activate-service-account $GCE_SERVICE_ACCOUNT_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS
+        - gsutil cp gs://dogma-apery/google_compute_engine $HOME/.ssh/google_compute_engine
+        - chmod 600 $HOME/.ssh/google_compute_engine
+        - gsutil cp gs://dogma-apery/google_compute_engine.pub $HOME/.ssh/google_compute_engine.pub
+        - chmod 644 $HOME/.ssh/google_compute_engine.pub
         - make tests-infra
       if: branch = master
     - stage: "Build VM image"
