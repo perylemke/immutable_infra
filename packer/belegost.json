@@ -15,7 +15,7 @@
             "image_name": "{{user `packer_build_number`}}-{{user `deploy_env`}}-{{user `version`}}",
             "network": "demo-apery-{{user `deploy_env`}}",
             "subnetwork": "demo-apery-{{user `deploy_env`}}",
-            "tag": ["ssh"],
+            "tags": ["ssh"],
             "ssh_username": "admin",
             "zone": "{{user `zone`}}",
             "disk_size": 10,
@@ -35,7 +35,7 @@
           "type": "ansible",
           "playbook_file": "./ansible/playbook.yml",
           "ansible_env_vars": [
-            "ANSIBLE_SSH_ARGS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o AddKeysToAgent=no -o IdentitiesOnly=yes'"
+              "ANSIBLE_SSH_ARGS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o AddKeysToAgent=no -o IdentitiesOnly=yes'"
           ],
           "user": "admin",
           "extra_arguments": [
