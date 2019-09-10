@@ -57,7 +57,9 @@ jobs:
         - source $HOME/google-cloud-sdk/path.bash.inc
         - gcloud auth activate-service-account $GCE_SERVICE_ACCOUNT_EMAIL --key-file $GOOGLE_APPLICATION_CREDENTIALS
         - gsutil cp gs://dogma-apery/google_compute_engine $HOME/.ssh/google_compute_engine
+        - chmod 600 $HOME/.ssh/google_compute_engine
         - gsutil cp gs://dogma-apery/google_compute_engine.pub $HOME/.ssh/google_compute_engine.pub
+        - chmod 644 $HOME/.ssh/google_compute_engine.pub
         - make tests-infra
       if: branch = fix_molecule
     - stage: "Build VM image"
