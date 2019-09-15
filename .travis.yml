@@ -71,5 +71,5 @@ jobs:
       name: "Deploy with Terraform"
       script:
         - make init
-        - make deploy-$DEPLOY_ENV
+        - make deploy
       if: branch = master

@@ -1,9 +1,12 @@
-data "google_compute_subnetwork" "apery-subnetwork" {
-  name = google_compute_subnetwork.apery-subnet.name
+terraform {
+  required_version = ">= 0.12"
 }
 
-# App Infra
+data "google_compute_subnetwork" "apery-subnetwork" {
+  name = format("%s%s", "demo-apery-", var.environment)
+}
 
+# Core
 resource "google_compute_autoscaler" "apery-autoscaler" {
   name   = format("%s%s", "apery-autoscaler-", var.environment)
   zone   = var.zone
@@ -64,7 +67,7 @@ resource "google_compute_instance_template" "apery-template" {
   name_prefix  = format("%s%s%s", "apery-template-", var.environment, "-")
   machine_type = var.machine_type
   region       = var.region
-  tags         = [var.tag_icmp, var.tag_http_https]
+  tags         = [var.tag_icmp, var.tag_http, var.tag_https]
 
   labels = {
     project     = "apery"
@@ -78,7 +81,7 @@ resource "google_compute_instance_template" "apery-template" {
 
   // networking
   network_interface {
-    subnetwork = data.google_compute_subnetwork.apery-subnetwork.network
+    subnetwork = data.google_compute_subnetwork.apery-subnetwork.name
 
     access_config {
       // Ephemeral IP - leaving this block empty will generate a new external IP and assign it to the machine
@@ -90,8 +93,7 @@ resource "google_compute_instance_template" "apery-template" {
   }
 }
 
-#  Load Balance
-
+# Load Balancing
 resource "google_compute_global_forwarding_rule" "apery-forwarding-rule" {
   name       = format("%s%s", "apery-frontend-http-", var.environment)
   target     = google_compute_target_http_proxy.apery-target-http-proxy.self_link
@@ -138,4 +140,3 @@ resource "google_compute_health_check" "apery-healthcheck" {
     port         = var.port_api_number
   }
 }
-

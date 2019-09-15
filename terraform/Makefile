@@ -1,40 +1,22 @@
-.PHONY: init plan-prod create-infra-prod deploy-prod destroy-prod plan-staging create-infra-staging deploy-staging destroy-staging plan-dev create-infra-dev deploy-dev destroy-dev
+.PHONY: init plan apply deploy destroy
 
 init:
 	terraform init
 
 # Production commands
-plan-prod:
+plan:
 	terraform workspace select prod
-	terraform plan -var-file=prod.tfvars
+	terraform plan
 
-create-infra-prod:
+apply:
 	terraform workspace select prod
-	terraform apply -var-file=prod.tfvars
+	terraform apply
 
-deploy-prod:
+deploy:
 	terraform workspace select prod
-	terraform state rm google_compute_instance_template.apery-template
-	terraform apply -var-file=prod.tfvars -auto-approve
+	terraform state rm module.core.google_compute_instance_template.apery-template
+	terraform apply -auto-approve
 
-destroy-prod:
+destroy:
 	terraform workspace select prod
-	terraform destroy -var-file=prod.tfvars
-
-# Staging Commands
-plan-staging:
-	terraform workspace select staging
-	terraform plan -var-file=staging.tfvars
-
-create-infra-staging:
-	terraform workspace select staging
-	terraform apply -var-file=staging.tfvars
-
-deploy-staging:
-	terraform workspace select staging
-	terraform state rm google_compute_instance_template.apery-template
-	terraform apply -var-file=staging.tfvars -auto-approve
-
-destroy-staging:
-	terraform workspace select staging
-	terraform destroy -var-file=staging.tfvars
+	terraform destroy

@@ -1,5 +1,8 @@
-# Network
+terraform {
+  required_version = ">= 0.12"
+}
 
+# Network
 resource "google_compute_network" "apery-network" {
   name                    = format("%s%s", "demo-apery-", var.environment)
   auto_create_subnetworks = false
@@ -13,21 +16,6 @@ resource "google_compute_subnetwork" "apery-subnet" {
 }
 
 # Firewall
-
-resource "google_compute_firewall" "ssh" {
-  name    = format("%s%s", "ssh-firewall-", var.environment)
-  network = google_compute_network.apery-network.self_link
-
-  allow {
-    protocol = "tcp"
-    ports    = [var.ssh_port]
-  }
-
-  source_ranges = [var.allow_all_ranges]
-  source_tags   = [var.tag_ssh]
-  target_tags   = [var.tag_ssh]
-}
-
 resource "google_compute_firewall" "icmp" {
   name    = format("%s%s", "icmp-firewall-", var.environment)
   network = google_compute_network.apery-network.self_link
@@ -41,17 +29,30 @@ resource "google_compute_firewall" "icmp" {
   target_tags   = [var.tag_icmp]
 }
 
-resource "google_compute_firewall" "http-https" {
-  name    = format("%s%s", "http-https-firewall-", var.environment)
+resource "google_compute_firewall" "http" {
+  name    = format("%s%s", "http-firewall-", var.environment)
   network = google_compute_network.apery-network.self_link
 
   allow {
     protocol = "tcp"
-    ports    = [var.http_port, var.https_port]
+    ports    = [var.http_port]
   }
 
   source_ranges = [var.allow_all_ranges]
-  source_tags   = [var.tag_http_https]
-  target_tags   = [var.tag_http_https]
+  source_tags   = [var.tag_http]
+  target_tags   = [var.tag_http]
 }
 
+resource "google_compute_firewall" "https" {
+  name    = format("%s%s", "https-firewall-", var.environment)
+  network = google_compute_network.apery-network.self_link
+
+  allow {
+    protocol = "tcp"
+    ports    = [var.https_port]
+  }
+
+  source_ranges = [var.allow_all_ranges]
+  source_tags   = [var.tag_https]
+  target_tags   = [var.tag_https]
+}
