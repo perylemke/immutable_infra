@@ -1,4 +1,4 @@
-.PHONY: build init plan production create-infra deploy destroy
+.PHONY: build tests-app tests-infra init plan apply deploy destroy
 
 # Packer command
 build:
@@ -17,27 +17,14 @@ init:
 	@$(MAKE) -s -C terraform init
 
 # Terraform -> Production Commands
-plan-prod:
-	@$(MAKE) -s -C terraform plan-prod
+plan:
+	@$(MAKE) -s -C terraform plan
 
-create-infra-prod:
-	@$(MAKE) -s -C terraform create-infra-prod
+apply:
+	@$(MAKE) -s -C terraform apply
 
-deploy-prod:
-	@$(MAKE) -s -C terraform deploy-prod
+deploy:
+	@$(MAKE) -s -C terraform deploy
 
-destroy-prod:
-	@$(MAKE) -s -C terraform destroy-prod
-
-# Terraform -> Staging Commands
-plan-staging:
-	@$(MAKE) -s -C terraform plan-staging
-
-create-infra-staging:
-	@$(MAKE) -s -C terraform create-infra-staging
-
-deploy-staging:
-	@$(MAKE) -s -C terraform deploy-staging
-
-destroy-staging:
-	@$(MAKE) -s -C terraform destroy-staging
+destroy:
+	@$(MAKE) -s -C terraform destroy
