@@ -11,6 +11,8 @@ before_install:
   - echo $GOOGLE_PACKER_CREDENTIALS > $TRAVIS_BUILD_DIR/demo-infra.json
   - export GOOGLE_APPLICATION_CREDENTIALS=$TRAVIS_BUILD_DIR/demo-infra.json
   - sudo apt-get update && sudo apt-get install -y curl
+  - sudo curl -L https://dl.google.com/cloudagents/install-monitoring-agent.sh -o /usr/local/bin/install-monitoring-agent.sh
+  - sudo chmod +x /usr/local/bin/install-monitoring-agent.sh
   - mkdir bin && cd bin
   - curl -L -o packer_1.4.3_linux_amd64.zip https://releases.hashicorp.com/packer/1.4.3/packer_1.4.3_linux_amd64.zip
   - sudo unzip packer_1.4.3_linux_amd64.zip

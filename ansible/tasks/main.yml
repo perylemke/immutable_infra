@@ -80,6 +80,48 @@
     password: "{{ docker_password }}"
   become: yes
 
+- name: Copy Google credentials
+  copy:
+    content: "{{ docker_google_credential }}"
+    dest: /etc/docker/docker-logs.json
+  become: true
+
+- name: create google auth directory
+  file:
+    path: /etc/google/auth/
+    state: directory
+    mode: 0755
+  become: true
+
+- name: Copy stackdriver key
+  copy:
+    content: "{{ stackdriver_key }}"
+    dest: /etc/google/auth/application_default_credentials.json
+  become: true
+
+- name: Ensure restrict permission of files
+  file:
+    path: /etc/google/auth/application_default_credentials.json
+    owner: root
+    group: root
+    # when specifying mode using octal numbers, add a leading 0
+    mode: 0600
+  become: true
+
+- name: Configure APPLICATION_DEFAULT_CREDS on profile
+  lineinfile:
+    path: /etc/profile
+    line: "export APPLICATION_DEFAULT_CREDS=/etc/google/auth/application_default_credentials.json"
+  become: true
+
+- name: Install Stackdriver Agent
+  script: /usr/local/bin/install-monitoring-agent.sh
+  register: script_output
+  changed_when: false
+  failed_when: false
+  become: true
+  notify: "start stackdriver"
+
 - name: Allow 'admin' group to have passwordless sudo
   lineinfile:
     dest: /etc/sudoers
@@ -88,6 +130,28 @@
     line: '%admin ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
   become: yes
+
+- name: Copy Daemon.json to /etc/docker
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+    mode: 0644
+  become: true
+
+- name: Creation expansion configurion to Docker
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: 0755
+  become: true
+
+- name: Copy Docker override configuration
+  template:
+    src: docker-service-override.conf.j2
+    dest: /etc/systemd/system/docker.service.d/docker-service-override.conf
+    mode: 0644
+  become: true
+  notify: "restart docker"
 
 - name: Apery | Create Unit file
   template:
