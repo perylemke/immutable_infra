@@ -1,4 +1,6 @@
 ---
+project: "{{ lookup('env', 'GCE_PROJECT_ID')}}"
+
 env: "{{ lookup('env', 'DEPLOY_ENV')}}"
 
 docker_username: "{{ lookup('env', 'DOCKER_USERNAME')}}"
@@ -8,3 +10,7 @@ docker_password: "{{ lookup('env', 'DOCKER_PASSWORD')}}"
 docker_apt_repository: >
   deb [arch=amd64]
   https://download.docker.com/linux/debian stretch stable
+
+docker_google_credential: "{{ lookup('env', 'DOCKER_GOOGLE_CREDENTIAL') }}"
+
+stackdriver_key: "{{ lookup('env', 'STACKDRIVER_KEY') }}"

@@ -2,10 +2,19 @@
 # handlers file for ansible
 - name: Ensure start docker
   systemd:
-    state: started
+    state: restarted
+    daemon_reload: yes
     name: docker
     enabled: yes
-  listen: "start docker"
+  listen: "restart docker"
+  become: true
+
+- name: Ensure start stackdriver
+  systemd:
+    state: started
+    name: stackdriver-agent
+    enabled: yes
+  listen: "start stackdriver"
   become: true
 
 - name: Ensure start apery
