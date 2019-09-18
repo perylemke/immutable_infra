@@ -65,7 +65,6 @@
     name: docker-py
     state: present
   become: true
-  notify: "start docker"
 
 - name: Add specific users to "docker" group
   user:
