@@ -17,5 +17,5 @@ def test_get_status_msg():
     with app.test_client() as client:
         response = client.get("/request")
         assert response.json == {
-            'response': "Fiquem em casa!"
+            'response': "Respeitem o isolamento social!"
         }

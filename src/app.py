@@ -11,7 +11,7 @@ api = Api(app)
 class Main(Resource):
     def get(self):
         host = socket.gethostname()
-        return {'response': "Fiquem em casa!"}
+        return {'response': "Respeitem o isolamento social!"}
 
 @api.route('/status')
 class Healthcheck(Resource):
