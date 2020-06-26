@@ -14,14 +14,14 @@ before_install:
   - sudo curl -L https://dl.google.com/cloudagents/install-monitoring-agent.sh -o /usr/local/bin/install-monitoring-agent.sh
   - sudo chmod +x /usr/local/bin/install-monitoring-agent.sh
   - mkdir bin && cd bin
-  - curl -L -o packer_$PACKER_VERSION_linux_amd64.zip https://releases.hashicorp.com/packer/$PACKER_VERSION/packer_$PACKER_VERSION_linux_amd64.zip
-  - sudo unzip packer_$PACKER_VERSION_linux_amd64.zip
+  - curl -L -o packer_1.5.1_linux_amd64.zip https://releases.hashicorp.com/packer/1.5.1/packer_1.5.1_linux_amd64.zip
+  - sudo unzip packer_1.5.1_linux_amd64.zip
   - sudo mv packer /usr/local/bin/
-  - rm packer_$PACKER_VERSION_linux_amd64.zip
-  - curl -L -o terraform_$TERRAFORM_VERSION_linux_amd64.zip https://releases.hashicorp.com/terraform/$TERRAFORM_VERSION/terraform_$TERRAFORM_VERSION_linux_amd64.zip
-  - sudo unzip terraform_$TERRAFORM_VERSION_linux_amd64.zip
+  - rm packer_1.5.1_linux_amd64.zip
+  - curl -L -o terraform_0.12.26_linux_amd64.zip https://releases.hashicorp.com/terraform/0.12.26/terraform_0.12.26_linux_amd64.zip
+  - sudo unzip terraform_0.12.26_linux_amd64.zip
   - sudo mv terraform /usr/local/bin
-  - rm -fv terraform_$TERRAFORM_VERSION_linux_amd64.zip
+  - rm -fv terraform_0.12.26_linux_amd64.zip
   - cd ..
 
 install:
